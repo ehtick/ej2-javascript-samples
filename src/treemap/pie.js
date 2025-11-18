@@ -73,7 +73,7 @@ function AccumulationChartRender(id) {
     var chart = new ej.charts.AccumulationChart({
         background: 'transparent',
         tooltip: {
-            enable: true,
+            enable: false,
             format: '${point.x} : ${point.y}%'
         },
         legendSettings: {
