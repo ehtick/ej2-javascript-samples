@@ -40,7 +40,7 @@ this.default = function () {
             {
                 field: 'PercentageChange',
                 headerText: '% Change',
-                width: '110',
+                width: '130',
                 format: 'N0',
                 textAlign: 'Right'
             },

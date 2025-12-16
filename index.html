@@ -59,7 +59,7 @@
     </script>
     <script src="dist/ej2.min.js"></script>
     <script src="dist/locale-string.js"></script>
-
+    <script src="src/common/ai-service.js"></script>
     <script id='sample-datasource' type='text/javascript'></script>
     <script src="src/common/lib/scripts/js-signals.min.js"></script>
     <script src="src/common/lib/scripts/elasticlunr.min.js"></script>
@@ -136,6 +136,11 @@
     </aside>
     <div class="sample-browser e-view">
         <div class="sb-mobile-overlay sb-hide"></div>
+        <div id="ai-toast"></div>
+        <div class="sb-token-header sb-hide" role="banner">
+            <div class="banner-message"></div>
+            <div class="close-button" role="button">×</div>
+        </div>
         <div id='sample-header' class="sb-header e-view" role="banner">
             <div class='sb-header-left sb-left sb-table'>
                 <div class='sb-header-item sb-table-cell'>

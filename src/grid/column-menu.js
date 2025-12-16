@@ -56,6 +56,7 @@ this.default = function () {
             visible: false,
             headerText: 'Ship Country',
             editType: 'dropdownedit',
+            width: 180
             },
             { field: 'ShipCity', headerText: 'Ship City', width: 150 }
         ]

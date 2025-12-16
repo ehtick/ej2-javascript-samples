@@ -3,9 +3,10 @@
  */
 var textArea;
 var mdsource;
+var markdownConverter = ej.markdownconverter.MarkdownConverter;
 this.default = function() {
     var defaultRTE = new ej.richtexteditor.RichTextEditor({
-        height: '250px',
+        height: '520px',
         placeholder : "Enter your text here...",
         formatter: new ej.richtexteditor.MarkdownFormatter({ listTags: { 'OL': '1., 2., 3.' } }),
         toolbarSettings: {
@@ -46,7 +47,7 @@ this.default = function() {
         if (mdsource.classList.contains('e-active')) {
             var id = defaultRTE.getID() + 'html-view';
             var htmlPreview = document.body.querySelector('#defaultRTEhtml-preview');
-            htmlPreview.innerHTML = marked(defaultRTE.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverterr.toHtml(defaultRTE.contentModule.getEditPanel().value);
         }
     }
     function fullPreview() {
@@ -73,16 +74,9 @@ this.default = function() {
             }
             textArea.style.display = 'none';
             htmlPreview.style.display = 'block';
-            htmlPreview.innerHTML = marked(defaultRTE.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverter.toHtml(defaultRTE.contentModule.getEditPanel().value);
             mdsource.parentElement.title = 'Code View';
         }
     }
     defaultRTE.appendTo('#defaultRTE');
-    loadExternalFile();
-    // Dynamically load the marked.js file
-    function loadExternalFile() {
-      var script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.19/marked.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
-    }
 };

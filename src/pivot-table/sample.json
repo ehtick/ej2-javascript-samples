@@ -53,6 +53,13 @@
             "description": "This demo for Essential<sup>®</sup> JS2 Pivot Table control demonstrate the basic rendering of the pivot table with olap datasource"
         },
         {
+            "url": "dynamic-binding",
+            "name": "Dynamic Binding",
+            "type": "new",
+            "category": "Data Binding",
+            "description": "Pivot Table demo for dynamic data loading from JSON, CSV, and OLAP(XMLA) sources, with toolbar options to save and reload reports as JSON files."
+        },
+        {
             "url": "performance",
             "name": "Performance",
             "category": "Benchmark",
@@ -67,7 +74,6 @@
         {
             "url": "pivot-chart-fieldlist",
             "name": "Pivot Chart with Field List",
-            "type": "new",
             "category": "Integration",
             "description": "This demo for Essential<sup>®</sup> JS2 Pivot Table control demonstrate the basic rendering of the pivot table data into a simple pivot chart with static field list"
         },
@@ -86,7 +92,6 @@
         {
             "url": "sparkline",
             "name": "Sparkline Chart",
-            "type": "new",
             "category": "Integration",
             "description": "This sample demonstrates how to embed sparkline charts inside Pivot Table cells to provide a visual representation of trends."
         },
@@ -195,7 +200,6 @@
         {
             "url": "external-data-based-filtering",
             "name": "External Filtering",
-            "type": "new",
             "category": "Filtering",
             "description": "This sample demonstrates how to externally filter data using a date range in the Pivot Table."
         },
@@ -250,7 +254,6 @@
         {
             "url": "pivot-table-exporting",
             "name": "Export as Pivot",
-            "type": "new",
             "category": "Exporting",
             "description": "This demo for Essential<sup>®</sup> JS2 Pivot Table control demonstrate server-side exporting of the pivot table to Excel, CSV and PDF formats"
         }

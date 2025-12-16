@@ -3,7 +3,7 @@
  */
 var acrdnObj,nestAcrdn;
 this.default = function () {
-    var fetchApi = new ej.base.Fetch('./src/accordion/fetch-content.html', 'GET');
+    var fetchApi = new ej.base.Fetch('//ej2.syncfusion.com/javascript/demos/src/accordion/fetch-content.html','GET');
     fetchApi.send().then();
     fetchApi.onSuccess = function (data) {
         //Initialize Accordion component

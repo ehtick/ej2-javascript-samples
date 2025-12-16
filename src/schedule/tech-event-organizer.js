@@ -80,7 +80,6 @@ this.default = function () {
         startHour: "08:00",
         endHour: "18:00",
         timeScale: { slotCount: 3 },
-        allowOverlap: false,
         allowDragAndDrop: false,
         allowResizing: false,
         eventSettings: {
@@ -149,6 +148,7 @@ this.default = function () {
         cellClick: onCellClick,
         popupClose: onPopupClose,
         popupOpen: onPopupOpen,
+        actionBegin: onActionBegin,
         actionComplete: onActionComplete
     });
 
@@ -352,15 +352,12 @@ this.default = function () {
                 var endTime = new Date(args.data.EndTime);
                 var capacity = args.data.Capacity;
 
-                var isRoomFiltered = scheduleObj.resourceCollection[0].dataSource.length === 1;
-
-                var isRoomAvailable = scheduleObj.isSlotAvailable(startTime, endTime, !isRoomFiltered ? roomId - 1 : 0) &&
-                    startTime.getHours() >= 8 &&
+                var isAvailableTime = startTime.getHours() >= 8 &&
                     (endTime.getHours() < 18 || (endTime.getHours() === 18 && endTime.getMinutes() === 0));
 
                 var isCapacityAvailable = checkRoomCapacity(capacity, roomId);
 
-                if (!isRoomAvailable) {
+                if (!isAvailableTime) {
                     var timeElement = args.element.querySelector('.e-start-end-row');
                     if (!args.element.querySelector('.time-alert')) {
                         var newTimeDiv = document.createElement('div');
@@ -390,7 +387,7 @@ this.default = function () {
                     }
                 }
 
-                if (!isRoomAvailable || !isCapacityAvailable) {
+                if (!isAvailableTime || !isCapacityAvailable) {
                     args.cancel = true;
                     return;
                 }
@@ -477,6 +474,23 @@ this.default = function () {
 
     function isDataSourceEmpty(dataSource) {
         return !dataSource || dataSource.length === 0;
+    }
+
+    function onActionBegin(args) {
+        if (args.requestType === 'eventCreate') {
+            var data = args.data;
+            var roomId = data[0].RoomId;
+            var startTime = data[0].StartTime;
+            var endTime = data[0].EndTime;
+            var isRoomFiltered = scheduleObj.resourceCollection[0].dataSource.length === 1;
+            var isRoomAvailable = scheduleObj.isSlotAvailable(startTime, endTime, !isRoomFiltered ? roomId - 1 : 0);
+            if (!isRoomAvailable) {
+                args.cancel = true;
+                alertDialog.content = 'Room is already booked for the selected time slot.';
+                alertDialog.show();
+                return;
+            }
+        }
     }
 
     function onActionComplete(args) {

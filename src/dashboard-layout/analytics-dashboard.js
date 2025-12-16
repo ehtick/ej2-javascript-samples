@@ -231,10 +231,10 @@ this.default = function () {
         },
         layers: [
             {
-                shapeData: new ej.maps.MapAjax('./src/dashboard-layout/worldmap.json'),
+                shapeData: new ej.maps.MapAjax('https://ej2.syncfusion.com/demos/src/dashboard-layout/worldmap.json'),
                 shapePropertyPath: 'continent',
                 shapeDataPath: 'continent',
-                dataSource: new ej.maps.MapAjax('./src/dashboard-layout/datasource.json'),
+                dataSource: new ej.maps.MapAjax('https://ej2.syncfusion.com/demos/src/dashboard-layout/datasource.json'),
                 shapeSettings: {
                     colorValuePath: 'color',
                 },

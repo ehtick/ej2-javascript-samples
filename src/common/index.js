@@ -36,6 +36,8 @@ var urlRegex = /(npmci\.syncfusion\.com|ej2\.syncfusion\.com)(\/)(development|pr
 var aiUrlRegex = /\/ai-[^\/]+\//;
 var aiControlRegex = /^ai-.*/;
 var sampleRegex = /#\/(([^\/]+\/)+[^\/\.]+)/;
+let toastObjt = null;
+let isToastVisible = false;
 // Regex for removing hidden codes
 var reg = /.*custom code start([\S\s]*?)custom code end.*/g;
 var sbArray = ['angular', 'nextjs', 'react', 'typescript', 'aspnetcore', 'aspnetmvc', 'vue', 'blazor'];
@@ -162,7 +164,8 @@ if (ej.base.Browser.isDevice || isMobile) {
         showBackdrop: false,
         closeOnDocumentClick: false,
         enableGestures: false,
-        change:resizeFunction
+        change:resizeFunction,
+        created: resizeFunction
     });
     sidebar.appendTo('#left-sidebar');
 }
@@ -1565,7 +1568,7 @@ function onDataSourceLoad(node, subNode, control, sample, sampleName) {
     setSbLink();
     const desktopSettings = ej.base.select('.sb-desktop-setting');
     if (!ej.base.Browser.isDevice && desktopSettings) {
-        desktopSettings.style.display = !(/^ai-assistview/).test(control) && aiControlRegex.test(control) ? 'none' : '';
+        desktopSettings.style.display = (aiControlRegex.test(control) || aiControlRegex.test(sample)) && (!(/^ai-assistview/).test(control) || aiControlRegex.test(sample)) ? 'none' : '';
     }
     var ajaxFile = [];
     var nameFile = [];
@@ -1614,9 +1617,9 @@ function onDataSourceLoad(node, subNode, control, sample, sampleName) {
     var ajaxHTML = new ej.base.Ajax('src/' + control + '/' + sample + '.html', 'GET', true);
     var p1 = ajaxHTML.send();
     var jsScriptName = sample;
-    if ((aiControlRegex).test(control) && aiControlRegex.test(sample)) {
-        jsScriptName = sample.split('ai-')[1];
-    }
+    // if ((aiControlRegex).test(control) && aiControlRegex.test(sample)) {
+    //     jsScriptName = sample.split('ai-')[1];
+    // }
     var p2 = loadScriptfile('src/' + control + '/' + jsScriptName + '.js');
     var ajaxJs = new ej.base.Ajax('src/' + control + '/' + jsScriptName + '.js', 'GET', true);
     sampleNameElement.innerHTML = node.name;
@@ -1643,7 +1646,7 @@ function onDataSourceLoad(node, subNode, control, sample, sampleName) {
     //     document.querySelector('.js-source-content').innerHTML = value.toString().replace(/</g, '&lt;').replace(/\>/g, '&gt;');
     //     hljs.highlightBlock(document.querySelector('.js-source-content'));
     // });
-    if (!(aiControlRegex).test(control) || (/^ai-assistview/).test(control)) {
+    if ((!(aiControlRegex).test(control) && !(aiControlRegex).test(sample)) || ((/^ai-assistview/).test(control) && !(aiControlRegex).test(sample))) {
         var plunk = new ej.base.Ajax('src/' + control + '/' + sample + '-stack.json', 'GET', true);
         var p3 = plunk.send();
 
@@ -1993,3 +1996,88 @@ function loadJSON() {
     loadTheme(selectedTheme);
 }
 loadJSON();
+
+
+ej.base.select('.close-button').addEventListener('click', () => {
+    let banner = document.querySelector('.sb-token-header');
+    if (banner) {
+        banner.classList.add('sb-hide');
+    }
+});
+
+function contentTemplate() {
+    const container = document.createElement('div');
+    container.className = 'ai-toast-container';
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'ai-content-text'
+
+    const title = document.createElement('div');
+    title.className = 'ai-content-title';
+    title.innerText = 'Explore AI Demos';
+
+    const message = document.createElement('div');
+    message.className = 'ai-content-message';
+    message.innerHTML = `You can now explore our <strong>Smart AI demos</strong> with limited AI token usage.Additionally, you can try out our <strong>
+        <a href="https://github.com/syncfusion/smart-ai-samples/tree/master" target="_blank" style="color: #007bff;">Syncfusion Smart AI Samples</a></strong> locally by using your own API key.`;
+
+    textDiv.appendChild(title);
+    textDiv.appendChild(message);
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'toast-close-button';
+    closeBtn.innerText = '✕';
+    closeBtn.setAttribute('aria-label', 'Close');
+
+    container.appendChild(textDiv);
+    container.appendChild(closeBtn);
+
+    return container;
+}
+
+function attachCloseHandler() {
+    const closeBtn = toastObjt.element.querySelector('.toast-close-button');
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            toastObjt.hide();
+            isToastVisible = false;
+        });
+    }
+}
+
+function showToast() {
+    if (!toastObjt) {
+        toastObjt = new ej.notifications.Toast({
+            width: 420,
+            content: contentTemplate(),
+            position: { X: 'Right', Y: 'Top' },
+            timeOut: 0,
+            newestOnTop: true,
+            created: () => {
+                toastObjt.show();
+                isToastVisible = true;
+                attachCloseHandler();
+            }
+        });
+        toastObjt.appendTo('#ai-toast');
+    } else if (!isToastVisible) {
+        toastObjt.show();
+        isToastVisible = true;
+        attachCloseHandler();
+    }
+}
+
+function hideToast() {
+    if (toastObjt && isToastVisible) {
+        toastObjt.hide();
+        isToastVisible = false;
+    }
+}
+
+window.addEventListener('hashchange', () => {
+    if (location.hash.includes('ai-')) {
+        showToast();
+    } else {
+        hideToast();
+    }
+});

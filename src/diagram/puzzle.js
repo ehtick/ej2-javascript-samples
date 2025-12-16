@@ -551,7 +551,7 @@ this.default = function () {
             winDialog.style.display = 'flex';
         }
         if (finalMoves) {
-            finalMoves.textContent = moveCount.toString()+" steps in " + timeDisplay;
+            finalMoves.textContent = moveCount.toString() + " steps in " + timeDisplay;
         }
     }
 

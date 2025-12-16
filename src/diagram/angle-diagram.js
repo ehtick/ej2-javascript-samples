@@ -43,222 +43,105 @@ this.default = function () {
 
     var diagramCreated = false;
 
+    // Helper creators to build nodes/connectors similar to TS sample
+    function createTextNode(id, width, height, offsetX, offsetY, content, style, constraints) {
+        return {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            constraints: (typeof constraints === 'number') ? constraints : ej.diagrams.NodeConstraints.None,
+            shape: { type: 'Text', content: content },
+            style: style
+        };
+    }
+    function createNativeNode(id, width, height, offsetX, offsetY, svgContent, constraints) {
+        return {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            constraints: (typeof constraints === 'number') ? constraints : ej.diagrams.NodeConstraints.None,
+            shape: { type: 'Native', content: svgContent }
+        };
+    }
+    function createImageNode(id, width, height, offsetX, offsetY, source, rotateAngle, constraints, pivotX, pivotY) {
+        var node = {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            shape: { type: 'Image', source: source },
+            style: { fill: 'transparent', strokeColor: 'transparent' },
+            constraints: ej.diagrams.NodeConstraints.None
+        };
+        if (typeof rotateAngle === 'number') node.rotateAngle = rotateAngle;
+        if (typeof constraints === 'number') node.constraints = constraints;
+        if (typeof pivotX === 'number' && typeof pivotY === 'number') node.pivot = { x: pivotX, y: pivotY };
+        return node;
+    }
+    function createEllipseNode(id, width, height, offsetX, offsetY, fill, strokeColor, strokeWidth, constraints) {
+        return {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            constraints: (typeof constraints === 'number') ? constraints : ej.diagrams.NodeConstraints.None,
+            shape: { type: 'Basic', shape: 'Ellipse' },
+            style: { fill: fill, strokeColor: strokeColor, strokeWidth: strokeWidth }
+        };
+    }
+    function createHtmlNode(id, width, height, offsetX, offsetY, html, constraints) {
+        return {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            constraints: (typeof constraints === 'number') ? constraints : ej.diagrams.NodeConstraints.None,
+            shape: { type: 'HTML', content: html }
+        };
+    }
+    function createRectNode(id, width, height, offsetX, offsetY, fill, strokeColor, strokeWidth, constraints) {
+        return {
+            id: id, width: width, height: height, offsetX: offsetX, offsetY: offsetY,
+            constraints: (typeof constraints === 'number') ? constraints : ej.diagrams.NodeConstraints.None,
+            style: { fill: fill, strokeColor: strokeColor, strokeWidth: strokeWidth }
+        };
+    }
+    function createConnectorBezier(id, spx, spy, tpx, tpy, c1x, c1y, c2x, c2y, strokeColor, strokeWidth, dash, opacity) {
+        return {
+            id: id,
+            zIndex: 1,
+            type: 'Bezier',
+            constraints: ej.diagrams.ConnectorConstraints.None,
+            sourcePoint: { x: spx, y: spy },
+            targetPoint: { x: tpx, y: tpy },
+            segments: [{ type: 'Bezier', point1: { x: c1x, y: c1y }, point2: { x: c2x, y: c2y } }],
+            style: { strokeColor: strokeColor, strokeWidth: strokeWidth, strokeDashArray: dash, opacity: opacity },
+            sourceDecorator: { shape: 'None' },
+            targetDecorator: { shape: 'None' }
+        };
+    }
+    function getLocationHtml() {
+        return '\n                <div class="angle-control-section" style="height:150px; width:300px">\n                    <div class="angle-control-label" style="font-size:18px; font-weight:600">\n                        Select location\n                    </div>\n                    <div id="locationDropdown"></div>\n                </div>';
+    }
+    function getEfficiencyHtml() {
+        return '\n            <div class="efficiency-section" style="width:300px; height:345px;">\n                <h3 class="angle-control-label" style="font-size:18px; font-weight:600">\n                    System Efficiency\n                </h3>\n                <div style="width: 210px; height:180px; margin:auto;">\n                    <div id="efficiencyGauge"></div>\n                </div>\n                <div style="width:250px;">\n                    <div id="performanceMessage"></div>\n                </div>\n            </div>';
+    }
+    function getAngleHtml() {
+        return '\n        <div class="angle-control-section" style="width: 300px; height: 185px;">\n          <div class="angle-control-label" style="font-size:18px; font-weight:600">\n              Tilt Angle\n          </div>\n          <div>\n              <input id="angleValue" style="height:40px !important;font-size:large" />\n          </div>\n          <div class="angle-description" id="angleDescription">' + getAngleDescription() + '</div>\n        </div>';
+    }
+
     function initializeDiagram() {
         var nodes = [
-            // Title
-            {
-                id: 'title',
-                width: 450,
-                height: 80,
-                offsetX: 485,
-                offsetY: 135,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Text', content: 'SMART SOLAR PANEL TILT SYSTEM' },
-                style: {
-                    color: '#2c3e50',
-                    fill: 'transparent',
-                    fontFamily: 'Segoe UI',
-                    fontSize: 26,
-                    bold: true
-                }
-            },
-            // East sun
-            {
-                id: 'eastSun',
-                width: 60,
-                height: 60,
-                offsetX: 221,
-                offsetY: 422,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Native', content: eastSunSvg }
-            },
-            // Center sun
-            {
-                id: 'centerSun',
-                width: 60,
-                height: 60,
-                offsetX: 483,
-                offsetY: 293,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Native', content: centerSunSvg }
-            },
-            // West sun
-            {
-                id: 'westSun',
-                width: 60,
-                height: 45,
-                offsetX: 731,
-                offsetY: 422,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Native', content: westSunSvg }
-            },
-            // Labels
-            {
-                id: 'eastLabel',
-                width: 60,
-                height: 30,
-                offsetX: 238,
-                offsetY: 365,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Text', content: 'EAST' },
-                style: {
-                    color: '#34495e',
-                    fill: 'transparent',
-                    fontFamily: 'Segoe UI',
-                    fontSize: 14,
-                    bold: true
-                }
-            },
-            {
-                id: 'westLabel',
-                width: 60,
-                height: 30,
-                offsetX: 725,
-                offsetY: 365,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Text', content: 'WEST' },
-                style: {
-                    color: '#34495e',
-                    fill: 'transparent',
-                    fontFamily: 'Segoe UI',
-                    fontSize: 14,
-                    bold: true
-                }
-            },
-            // Ground
-            {
-                id: 'groundLine',
-                width: 500,
-                height: 5,
-                offsetX: 489,
-                offsetY: 657,
-                constraints: ej.diagrams.NodeConstraints.None,
-                style: { fill: '#2E485F', strokeColor: '#2E485F', strokeWidth: 2 }
-            },
-            // Support structure
-            {
-                id: 'supportPost',
-                width: 215,
-                height: 185,
-                offsetX: 465,
-                offsetY: 565,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Image', source: './src/diagram/Images/angle/panelSupport.png' },
-                style: { fill: 'transparent', strokeColor: 'transparent' }
-            },
-            // Solar panel (rotatable)
-            {
-                id: 'solarPanelFrame',
-                width: 260,
-                height: 50,
-                offsetX: 478.25,
-                offsetY: 485,
-                rotateAngle: solarData.currentAngle,
-                constraints: (ej.diagrams.NodeConstraints.Default | ej.diagrams.NodeConstraints.ReadOnly) & ~ej.diagrams.NodeConstraints.Drag,
-                pivot: { x: 0.5, y: 0.8 },
-                shape: { type: 'Image', source: './src/diagram/Images/angle/solarPanel.png' },
-                style: { fill: 'transparent', strokeColor: 'transparent' }
-            },
-            // Pivot point
-            {
-                id: 'pivotPoint',
-                width: 16,
-                height: 16,
-                offsetX: 478.5,
-                offsetY: 488,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: { type: 'Basic', shape: 'Ellipse' },
-                style: { fill: '#FF5F1F', strokeColor: '#2E485F', strokeWidth: 1 }
-            },
-            // Location dropdown (HTML)
-            {
-                id: 'location',
-                offsetX: 1130,
-                offsetY: 100,
-                width: 300,
-                height: 150,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: {
-                    type: 'HTML',
-                    content: `
-                <div class="angle-control-section" style="height:150px; width:300px">
-                    <div class="angle-control-label" style="font-size:18px; font-weight:600">
-                        Select location
-                    </div>
-                    <div id="locationDropdown"></div>
-                </div>`
-                }
-            },
-            // Efficiency gauge (HTML)
-            {
-                id: 'efficiency',
-                offsetX: 1130,
-                offsetY: 383,
-                width: 300,
-                height: 350,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: {
-                    type: 'HTML',
-                    content: `
-            <div class="efficiency-section" style="width:300px; height:345px;">
-                <h3 class="angle-control-label" style="font-size:18px; font-weight:600">
-                    System Efficiency
-                </h3>
-                <div style="width: 210px; height:180px; margin:auto;">
-                    <div id="efficiencyGauge"></div>
-                </div>
-                <div style="width:250px;">
-                    <div id="performanceMessage"></div>
-                </div>
-            </div>`
-                }
-            },
-            // Angle controls (HTML)
-            {
-                id: 'angle',
-                offsetX: 1130,
-                offsetY: 680,
-                width: 300,
-                height: 185,
-                constraints: ej.diagrams.NodeConstraints.None,
-                shape: {
-                    type: 'HTML',
-                    content: `
-        <div class="angle-control-section" style="width: 300px; height: 185px;">
-          <div class="angle-control-label" style="font-size:18px; font-weight:600">
-              Tilt Angle
-          </div>
-          <div>
-              <input id="angleValue" style="height:40px !important;font-size:large" />
-          </div>
-          <div class="angle-description" id="angleDescription">${getAngleDescription()}</div>
-        </div>`
-                }
-            }
+            createTextNode('title', 450, 80, 485, 135, 'SMART SOLAR PANEL TILT SYSTEM', {
+                color: '#2c3e50', fill: 'transparent', fontFamily: 'Segoe UI', fontSize: 26, bold: true
+            }),
+            createNativeNode('eastSun', 60, 60, 221, 422, eastSunSvg),
+            createNativeNode('centerSun', 60, 60, 483, 293, centerSunSvg),
+            createNativeNode('westSun', 60, 45, 731, 422, westSunSvg),
+            createTextNode('eastLabel', 60, 30, 238, 365, 'EAST', {
+                color: '#34495e', fill: 'transparent', fontFamily: 'Segoe UI', fontSize: 14, bold: true
+            }),
+            createTextNode('westLabel', 60, 30, 725, 365, 'WEST', {
+                color: '#34495e', fill: 'transparent', fontFamily: 'Segoe UI', fontSize: 14, bold: true
+            }),
+            createRectNode('groundLine', 500, 5, 489, 657, '#2E485F', '#2E485F', 2),
+            createImageNode('supportPost', 215, 185, 465, 565, './src/diagram/Images/angle/panelSupport.png'),
+            createImageNode('solarPanelFrame', 260, 50, 478.25, 485, './src/diagram/Images/angle/solarPanel.png', solarData.currentAngle, (ej.diagrams.NodeConstraints.Default | ej.diagrams.NodeConstraints.ReadOnly) & ~ej.diagrams.NodeConstraints.Drag, 0.5, 0.8),
+            createEllipseNode('pivotPoint', 16, 16, 478.5, 488, '#FF5F1F', '#2E485F', 1),
+            createHtmlNode('location', 300, 150, 1130, 100, getLocationHtml()),
+            createHtmlNode('efficiency', 300, 350, 1130, 383, getEfficiencyHtml()),
+            createHtmlNode('angle', 300, 185, 1130, 680, getAngleHtml())
         ];
 
         var connectors = [
-            {
-                id: 'sunPath',
-                zIndex: 1,
-                type: 'Bezier',
-                constraints: ej.diagrams.ConnectorConstraints.None,
-                sourcePoint: { x: 221, y: 422 },
-                targetPoint: { x: 731, y: 422 },
-                segments: [{
-                    type: 'Bezier',
-                    point1: { x: 350, y: 260 },
-                    point2: { x: 610, y: 260 }
-                }],
-                style: {
-                    strokeColor: '#3498db',
-                    strokeWidth: 3,
-                    strokeDashArray: '10,5',
-                    opacity: 0.8
-                },
-                sourceDecorator: { shape: 'None' },
-                targetDecorator: { shape: 'None' }
-            }
+            createConnectorBezier('sunPath', 221, 422, 731, 422, 350, 260, 610, 260, '#3498db', 3, '10,5', 0.8)
         ];
 
         diagram = new ej.diagrams.Diagram({
@@ -274,6 +157,11 @@ this.default = function () {
             snapSettings: { constraints: ej.diagrams.SnapConstraints.None },
             selectedItems: { constraints: ej.diagrams.SelectorConstraints.Rotate },
             rotateChange: onRotationChange,
+            click: () => {
+                // Prevent losing selection of the solar panel node
+                var solarPanelNode = diagram.getObject('solarPanelFrame');
+                if (solarPanelNode) diagram.select([solarPanelNode]);
+            },
             created: () => {
                 diagramCreated = true;
                 diagram.fitToPage();
@@ -290,7 +178,7 @@ this.default = function () {
                         initializeEfficiencyGauge();
                         initializePerformanceMessage();
                         initializeAngleControls();
-                        updateUI();
+                        updateUI(); // Update UI after initialization
                         diagram.fitToPage();
                     }
                 });
@@ -393,9 +281,9 @@ this.default = function () {
                 minorTicks: { height: 0 },
                 labelStyle: { font: { size: '0px' } },
                 ranges: [
-                    { start: 0, end: 40, color: '#EF5B2E', startWidth: 18, endWidth: 18 },
-                    { start: 40, end: 60, color: '#FEA714', startWidth: 18, endWidth: 18 },
-                    { start: 60, end: 90, color: '#3ABA47', startWidth: 18, endWidth: 18 }
+                    { start: 0, end: 35, color: '#3ABA47', startWidth: 18, endWidth: 18 },
+                    { start: 35, end: 55, color: '#FEA714', startWidth: 18, endWidth: 18 },
+                    { start: 55, end: 90, color: '#EF5B2E', startWidth: 18, endWidth: 18 }
                 ],
                 pointers: [{
                     type: 'Marker',
@@ -559,35 +447,63 @@ this.default = function () {
 
     function calculateEfficiency() {
         if (solarData.sunElevation <= 0) {
+            solarData.efficiency = 0;
             solarData.incidenceAngle = 90;
-            // Smooth decay to avoid a sudden drop when sun dips below horizon
-            solarData.efficiency = (solarData.efficiency || 0) * 0.8;
             return;
         }
 
-        var panelTiltRad = (solarData.intPanelAngleDeg || 0) * Math.PI / 180.0;
-        var sunElevRad   = (solarData.sunElevation   || 0) * Math.PI / 180.0;
-        var azimuthDiff  = 0;
+        var panelTiltRad = (solarData.intPanelAngleDeg * Math.PI) / 180.0;
+        var sunElevRad = (solarData.sunElevation * Math.PI) / 180.0;
+        var azimuthDiff = 0;
 
         var cosIncidence =
             Math.sin(sunElevRad) * Math.cos(panelTiltRad) +
             Math.cos(sunElevRad) * Math.sin(panelTiltRad) * Math.cos(azimuthDiff);
-
         cosIncidence = Math.max(0, Math.min(1, cosIncidence));
-        solarData.incidenceAngle = Math.acos(cosIncidence) * 180.0 / Math.PI;
+        solarData.incidenceAngle = (Math.acos(cosIncidence) * 180.0) / Math.PI;
 
-        var irradianceFactor = Math.min(1.0, (solarData.solarIrradiance || 0) / 900.0);
-        var temperatureFactor = 0.96;
-        var systemLossFactor  = 0.96;
+        var irradianceFactor = Math.min(1.0, solarData.solarIrradiance / 900.0);
+        var temperatureFactor = 0.95;
+        var systemLossFactor = 0.95;
 
-        var optimalAngleDiff   = Math.abs((solarData.intPanelAngleDeg || 0) - (solarData.optimalTilt || 0));
-        var optimalAngleFactor = 1.0 - (optimalAngleDiff / 90.0) * 0.1;
-        optimalAngleFactor     = Math.max(0.9, optimalAngleFactor);
+        var optimalAngleDiff = Math.abs(
+            solarData.intPanelAngleDeg - solarData.optimalTilt
+        );
+        var optimalAngleFactor = Math.max(
+            0.9,
+            1.0 - (optimalAngleDiff / 90.0) * 0.2
+        );
 
-        let eff = 100.0 * cosIncidence * irradianceFactor * temperatureFactor * systemLossFactor * optimalAngleFactor;
-        if (optimalAngleDiff < 5) {
-            eff = Math.min(100, eff * 1.02);
+        var eff =
+            100.0 *
+            cosIncidence *
+            irradianceFactor *
+            temperatureFactor *
+            systemLossFactor *
+            optimalAngleFactor;
+
+        if (optimalAngleDiff < 5) eff = Math.min(100, eff * 1.08);
+
+        // Gradual noon uplift similar to TS implementation
+        var noonAngle = solarData.currentAngle;
+        var d = Math.min(noonAngle, 360 - noonAngle);
+        var strongFloorWindowDeg = 10;
+        var noonWindowDeg = 15;
+
+        if (d <= noonWindowDeg) {
+            var weight = 0.5 * (1 + Math.cos((Math.PI * d) / noonWindowDeg));
+            var t = Math.min(1, d / strongFloorWindowDeg);
+            var minAtD = 65 + (60 - 65) * t;
+            var maxAtD = 75 + (68 - 75) * t;
+            var noonTarget = minAtD + (maxAtD - minAtD) * irradianceFactor;
+
+            var blended = eff + (noonTarget - eff) * weight;
+            var uplifted = Math.max(eff, blended);
+            if (d <= strongFloorWindowDeg) uplifted = Math.max(uplifted, irradianceFactor);
+
+            eff = Math.min(100, uplifted);
         }
+
         solarData.efficiency = Math.max(0, Math.min(100, eff));
     }
 
@@ -661,9 +577,9 @@ this.default = function () {
     }
 
     function getPerformanceMessage() {
-        if (solarData.efficiency > 60) {
-            return { message: 'Excellent Performance', severity: 'Success' };
-        } else if (solarData.efficiency > 40) {
+        if (solarData.efficiency > 55) {
+            return { message: 'Excellent Performance',  severity: 'Success'};
+        } else if (solarData.efficiency > 35) {
             return { message: 'Fair Performance', severity: 'Warning' };
         } else {
             return { message: 'Poor Performance', severity: 'Error' };

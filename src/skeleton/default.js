@@ -1,7 +1,7 @@
 this.default = function () {
     var skeletonCircleSmall = new ej.notifications.Skeleton({
         shape: 'Circle',
-        width: "3rem"
+        width: "1.875rem"
     });
     skeletonCircleSmall.appendTo("#skeletonCircleSmall");
 
@@ -25,7 +25,7 @@ this.default = function () {
 
     var skeletonSquareSmall = new ej.notifications.Skeleton({
         shape: 'Square',
-        width: "3rem"
+        width: "1.875rem"
     });
     skeletonSquareSmall.appendTo("#skeletonSquareSmall");
 

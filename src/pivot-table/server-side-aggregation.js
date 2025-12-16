@@ -5,7 +5,7 @@ this.default = function () {
     ej.base.enableRipple(false);
     var pivotObj = new ej.pivotview.PivotView({
         dataSourceSettings: {
-            url: 'https://ej2services.syncfusion.com/js/development/api/pivot/post',
+            url: 'https://services.syncfusion.com/js/production/api/pivot/post',
             mode: 'Server',
             expandAll: false,
             enableSorting: true,

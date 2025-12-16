@@ -3,6 +3,7 @@
     "directory": "textbox",
     "category": "Inputs",
     "ftName": "textbox",
+    "type": "update",
     "samples": [
         {
             "url": "default",
@@ -17,6 +18,14 @@
             "category": "TextBox",
             "description":"The example exposes a JavaScript(ES5) Multiline TextBox (textarea). It helps to render address, feedback, and more in HTML5 form with customizable.",
             "api": { "TextBox": ["multiline", "value", "placeholder", "floatLabelType", "enableRtl","enabled", "readonly"]}
+        },
+        {
+            "url": "adornments",
+            "name": "Adornments",
+            "type": "new",
+            "category": "TextBox",
+            "description":"The example exposes a JavaScript(ES5) TextBox with adornments support. It helps to render custom elements before or after the input element.",
+            "api": { "TextBox": ["prependTemplate", "appendTemplate"]}
         }
     ]
 }

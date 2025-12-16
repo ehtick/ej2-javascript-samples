@@ -55,6 +55,28 @@
             }
         },
         {
+            "url": "ai-assistant",
+            "name": "AI Assistant",
+            "description": "This demo showcases the HTML5 JavaScript Rich Text Editor (JavaScript WYSIWYG HTML editor) control's built in AI Assistant feature.",
+            "category": "Rich Text Editor",
+            "type": "new",
+            "hideDisplayGif": false,
+            "sourceFiles": [
+                { "displayName": "ai-assistant.html", "path": "src/rich-text-editor/ai-assistant.html" },
+                { "displayName": "ai-assistant.js", "path": "src/rich-text-editor/ai-assistant.js" },
+                { "displayName": "service.js", "path": "src/rich-text-editor/service.js" }
+            ],
+            "api": {
+                "RichTextEditor": [
+                    "appendTo",
+                    "aiAssistantSettings",
+                    "aiAssistantPromptRequest",
+                    "aiAssistantStopRespondingClick",
+                    "addAIPromptResponse"
+                ]
+            }
+        },
+        {
             "url": "image",
             "name": "Image",
             "description": "This demo explains how to insert images with a blob or base64 format, link to the images, image upload, rotate left/right, and more in JS (ECMAScript 5) Editor.",
@@ -75,7 +97,6 @@
         {
             "url": "insert-media",
             "name": "Insert Media",
-            "type": "update",
             "description": "This demo shows how to insert audio and video, Embed video, upload audio and video, and more in Insert Media.",
             "category": "Rich Text Editor",
             "api": {
@@ -307,7 +328,6 @@
             "name": "Events",
             "description": "This demo explains client-side events of JavaScript (ECMAScript 5) HTML Text Editor that is triggered on editing and formatting operations with an event tracer.",
             "category": "Rich Text Editor",
-            "type": "update",
             "api": {
                 "RichTextEditor": [
                     "Inject",

@@ -23,7 +23,7 @@
                "queryCellInfo"
             ]
          },
-         "description": "This JavaScript Tree Grid example demonstrates the overview in JavaScript Tree Grid Component. Explore here for more details."
+         "description": "This sample demonstrates a feature-rich Syncfusion JavaScript Tree Grid for employee management, displaying hierarchical data with advanced cell templates."
       },
       {
          "url": "live-data",
@@ -97,7 +97,6 @@
 	  {
 		 "url": "empty-record-template",
 		 "name": "Empty Record Template",
-		 "type": "new",
 		 "category": "Tree Grid",
 		 "description": "This demo demonstrates how to use Essential<sup>®</sup> JS 2 Tree Grid to display a custom template when the Tree Grid is rendered with an empty data source.",
 		 "api": {
@@ -173,7 +172,7 @@
                "parentIdMapping"
             ]
          },
-         "description": "This example illustrates binding self-referential flat data with parent ID to a Syncfusion<sup>®</sup> Essential<sup>®</sup> JS2 Tree Grid control."
+         "description": "The sample demonstrates the functional manufacturing Bill of Materials using the Tree Grid with self-referential data."
       },
       {
          "url": "columntemplate",
@@ -276,7 +275,6 @@
          "url": "stacked-header",
          "name": "Stacked Header",
          "category": "Columns",
-         "type": "update",
          "api": {
             "TreeGrid": [
                "dataSource",
@@ -307,6 +305,7 @@
          "url": "auto.wrap",
          "name": "Auto Wrap Column Cells",
          "category": "Columns",
+         "type": "update",
          "api": {
             "TreeGrid": [
                "dataSource",
@@ -475,6 +474,24 @@
             ]
          },
          "description": "This demo explains the way of customizing the row height of Syncfusion<sup>®</sup> Essential<sup>®</sup> JS2 Tree Grid control."
+      },
+      {
+         "url": "row-spanning",
+         "name": "Row Spanning (API)",
+         "category": "Rows",
+         "type": "new",
+         "api": {
+            "TreeGrid": [
+               "dataSource",
+               "childMapping",
+               "treeColumnIndex",
+               "enableRowSpan",
+               "enableColumnSpan",
+               "showColumnChooser",
+               "rowHeight"
+            ]
+         },
+         "description": "This demo demonstrates how to use rowspan and colspan API in the treegrid"
       },
       {
          "url": "inline.editing",
@@ -849,7 +866,6 @@
          "url": "aggregate.custom",
          "name": "Custom Aggregate",
          "category": "Aggregates",
-         "type": "update",
          "api": {
             "TreeGrid": [
                "dataSource",

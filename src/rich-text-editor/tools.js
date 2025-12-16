@@ -10,7 +10,7 @@ this.default = function() {
             items: [
                 'Undo', 'Redo', '|', 'ImportWord', 'ExportWord', 'ExportPdf', '|',
                 'Bold', 'Italic', 'Underline', 'StrikeThrough', 'InlineCode', '|', 'CreateLink', 'Image', 'CreateTable', 'CodeBlock',
-                'HorizontalLine', 'Blockquote', '|', 'BulletFormatList', 'NumberFormatList', 'Checklist', '|', 'Formats', 'Alignments', '|', 'Outdent', 'Indent', '|',
+                'HorizontalLine', 'Blockquote', '|', 'LineHeight', 'Formats', 'Alignments', '|', 'BulletFormatList', 'NumberFormatList', 'Checklist',  '|', 'Outdent', 'Indent', '|',
                 'FontColor', 'BackgroundColor', 'FontName', 'FontSize', '|', 'LowerCase', 'UpperCase', '|', 'SuperScript', 'SubScript', '|',
                 'EmojiPicker', 'FileManager', 'Video', 'Audio', '|', 'FormatPainter', 'ClearFormat',
                 '|', 'Print', 'FullScreen', '|', 'SourceCode']
@@ -152,6 +152,8 @@ this.default = function() {
     function handleFullScreen(e) {
         var sbCntEle = document.querySelector('.sb-content.e-view');
         var sbHdrEle = document.querySelector('.sb-header.e-view');
+        var sideBarElem = document.body.querySelector('#left-sidebar');
+        var sideBar = ej.base.getComponent(sideBarElem, 'sidebar');
         var leftBar;
         var transformElement;
         if (ej.base.Browser.isDevice) {
@@ -166,8 +168,7 @@ this.default = function() {
             if (ej.base.Browser.isDevice &&  ej.base.Browser.isIos) {
                 ej.base.addClass([sbCntEle, sbHdrEle], ['hide-header']);
             }
-            ej.base.addClass([leftBar], ['e-close']);
-            ej.base.removeClass([leftBar], ['e-open']);
+            sideBar.hide();
             if (!ej.base.Browser.isDevice) {
                 transformElement.style.marginLeft = '0px';
             }
@@ -180,7 +181,7 @@ this.default = function() {
             if (ej.base.Browser.isDevice &&  ej.base.Browser.isIos) {
                 ej.base.removeClass([sbCntEle, sbHdrEle], ['hide-header']);
             }
-            ej.base.removeClass([leftBar], ['e-close']);
+            sideBar.show();
             if (!ej.base.Browser.isDevice) {
                 ej.base.addClass([leftBar], ['e-open']);
                 transformElement.style.marginLeft = leftBar.offsetWidth + 'px';

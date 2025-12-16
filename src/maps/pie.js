@@ -79,7 +79,7 @@
                         },
                         {
                             visible: true,
-                            template: '<div id="pieChart3" style="top:-5px;left:10px;height:150px;width:200px;"></div>',
+                            template: '<div id="pieChart3" style="top:-5px;left:10px;height:150px;width:200px;transform-origin: 20% 40%;"></div>',
                             dataSource: [
                                 { 'latitude': 10.555037013237452, 'longitude': -64.1160548956648 }
                             ],

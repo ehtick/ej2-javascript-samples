@@ -11,6 +11,11 @@ this.default = function() {
 
     var chatUiInst = new ej.interactivechat.ChatUI({
         headerText: 'Albert',
+        enableAttachments: true,
+        attachmentSettings: {
+            saveUrl: 'https://services.syncfusion.com/js/production/api/FileUploader/Save',
+            removeUrl: 'https://services.syncfusion.com/js/production/api/FileUploader/Remove'
+        },
         headerIconCss: "chat_user1_avatar",
         messages: chatMessages.user1,
         user: { id: 'user1', user: 'Albert', avatarUrl: './src/chat-ui/images/andrew.png' },

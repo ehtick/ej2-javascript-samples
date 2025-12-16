@@ -13,11 +13,7 @@ this.default = function () {
             getImageUrl: hostUrl + 'api/FileAccess/GetImage'
         },
         toolbarSettings: { items: ['NewFolder', 'SortBy', 'Refresh', 'Cut', 'Copy', 'Paste', 'Delete', 'Download', 'Rename', 'Selection', 'View', 'Details'] },
-        contextMenuSettings: {
-            visible: true,
-            file: [ "Cut", "Copy", "|", "Delete", "Download", "Rename", "|", "Details"],
-            layout: ["SortBy", "View", "Refresh", "|", "Paste", "|", "NewFolder", "|", "Details", "|", "SelectAll"],
-        }
+        uploadSettings: { directoryUpload: true },
     });
 
     // render initialized File Manager

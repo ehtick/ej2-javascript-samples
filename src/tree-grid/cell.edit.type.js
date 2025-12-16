@@ -8,6 +8,7 @@ this.default = function () {
             allowAdding: true,
             allowEditing: true,
             allowDeleting: true,
+            clipMode: 'EllipsisWithTooltip',
             showDeleteConfirmDialog: true,
             mode: 'Row',
             newRowPosition: 'Above'

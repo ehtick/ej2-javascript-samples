@@ -46,7 +46,7 @@ function renderWizardComponents() {
         items: [
             { header: { 'text': 'New Booking' }, content: '#booking' },
             { header: { 'text': 'Train List' }, content: '#selectTrain', disabled: true },
-            { header: { 'text': 'Add Passenger' }, content: '#details', disabled: true },
+            { header: { 'text': 'Add Passenger' }, content: '#passangerdetails', disabled: true },
             { header: { 'text': 'Make Payment' }, content: '#confirm', disabled: true }
         ]
     });

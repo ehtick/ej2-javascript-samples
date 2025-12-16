@@ -1,4 +1,76 @@
-<!-- custom code start -->
+<script id="emptytemplate" type="text/x-template">
+    <div class='emptyRecordTemplate'>        
+        <span class="resmenu-emptyRecord">Hmm... we could not find that dish. Want to try something else?</span>
+    </div>
+</script>
+<script id="rowTemplate" type="text/x-template">
+    <tr>
+        ${if(FoodName === FoodCategory || CategoryId == null)}
+        <td class='resmenu-cell resmenu-parentfoodname' colspan="3">
+          <span class="resmenu-title">${FoodName}&nbsp;<span> (${iterateFootType(vegCount, nonvegCount)})</span> </span>
+        </td>
+        ${else}
+        <td class='resmenu-cell'>
+          <div class='resmenu-card'>
+             <div class="foodname-row" style=" display: flex;">
+                ${if(FoodType === 'Veg')}
+                  <span class='resmenu-FoodCategory_icon_veg'><span class="resmenu-veg-icon"></span></span>
+                ${else}
+                  <span class='resmenu-FoodCategory_icon_nonveg'><span class="resmenu-nonveg-icon"></span></span>
+                ${/if}
+                <span class='resmenu-foodname'>${FoodName}</span>
+              </div>
+              <div class="resmenu-rating">
+                <span>
+                    <span class="resmenu-rating-thumbsup">👍</span>
+                    <span class="resmenu-rating-value">${Rating}</span>&nbsp;
+                    <span class="resmenu-rating-count">(${TotalReviews})</span>
+                </span>
+              </div>
+              <div class='resmenu-fooddesc'>
+                ${FoodDescription}
+              </div>
+              <div class="resmenu-info-separator">${chiptags(ingredients)}</div>
+            </div>
+        </td>
+        <td class='resmenu-cell'>
+          <div class="resmenu-price-section">
+            ${if(originalPrice> newPrice)}
+            <span class="resmenu-price">$${newPrice} &nbsp;&nbsp;</span>
+            <span class='price-direction'>  <-- </span>
+            <span class="resmenu-old-price">$${originalPrice}</span>
+            ${else}
+            <span class="resmenu-price">$${newPrice}</span>
+            ${/if}
+          </div>
+        </td>
+        <td class='resmenu-cell'>
+            <div class="menu-right">
+                <div class="resmenu-image-wrap">
+                    <img class="resmenu-image" src="${Image}" alt="${FoodName}"/>
+                <div class="resmenu-count">
+                    <input id="food-numeric" class="resmenu-food-count" type="text"  />
+                </div>
+                </div>
+            </div>
+        </td>
+        ${/if}
+    </tr>
+</script>
+<div class="control-section">
+    <div class="content-wrapper">
+        <div class="treegrid-center-container">
+            <div class="resmenu-toolbar-search">
+                <input id="search-autocomplete" type="text" placeholder="Search for DISHES" />
+                <span class="e-input-group-icon e-search-icon"></span>
+            </div>
+            <div id="cartDialog"></div>
+            <div id="TreeGrid">
+            </div>
+        </div>
+
+    </div>
+</div>
 <style>
     .treegrid-center-container .e-gridheader .e-headercelldiv {
         text-align: center;
@@ -270,21 +342,22 @@
         padding-bottom: 15px !important;
         padding-left: 13px;
     }
+
     @media (max-width: 450px) {
-    .resmenu-image {
-        width: 60px;
-        height: 60px;
+        .resmenu-image {
+            width: 60px;
+            height: 60px;
+        }
+
+        .resmenu-count {
+            margin: 0 5px 0 0;
+        }
+
+        .resmenu-price-section {
+            text-align: left;
+        }
     }
-    
-    .resmenu-count {
-        margin: 0 5px 0 0;
-    }
-    
-    .resmenu-price-section {
-        text-align: left;
-    }
-    }
- 
+
     @media print {
         body {
             font-family: sans-serif;
@@ -298,106 +371,40 @@
             margin-bottom: 4px;
         }
     }
-    .sample-order{
-        display: flex;   flex-direction: row;
+
+    .sample-order {
+        display: flex;
+        flex-direction: row;
         justify-content: space-between;
         margin-bottom: 15px;
     }
-    .resmenu-order-no , .order-date{
+
+    .resmenu-order-no,
+    .order-date {
         font-weight: bold;
     }
-    .resmenu-order-no{
+
+    .resmenu-order-no {
         font-size: medium;
     }
-    .resmenu-thank-note{
+
+    .resmenu-thank-note {
         font-weight: bold;
         font-style: italic;
         margin: 30px;
         justify-items: center;
         font-size: medium;
     }
-    #dialog-container td{
+
+    #dialog-container td {
         padding: 5px 0;
     }
-    .resmenu-rating-thumbsup{
+
+    .resmenu-rating-thumbsup {
         position: relative;
         top: -2px;
-	}
+    }
 </style>
-<!-- custom code end -->
-<script id="emptytemplate" type="text/x-template">
-    <div class='emptyRecordTemplate'>        
-        <span class="resmenu-emptyRecord">Hmm... we could not find that dish. Want to try something else?</span>
-    </div>
-</script>
-<script id="rowTemplate" type="text/x-template">
-    <tr>
-        ${if(FoodName === FoodCategory || CategoryId == null)}
-        <td class='resmenu-cell resmenu-parentfoodname' colspan="3">
-          <span class="resmenu-title">${FoodName}&nbsp;<span> (${iterateFootType(vegCount, nonvegCount)})</span> </span>
-        </td>
-        ${else}
-        <td class='resmenu-cell'>
-          <div class='resmenu-card'>
-             <div class="foodname-row" style=" display: flex;">
-                ${if(FoodType === 'Veg')}
-                  <span class='resmenu-FoodCategory_icon_veg'><span class="resmenu-veg-icon"></span></span>
-                ${else}
-                  <span class='resmenu-FoodCategory_icon_nonveg'><span class="resmenu-nonveg-icon"></span></span>
-                ${/if}
-                <span class='resmenu-foodname'>${FoodName}</span>
-              </div>
-              <div class="resmenu-rating">
-                <span>
-                    <span class="resmenu-rating-thumbsup">👍</span>
-                    <span class="resmenu-rating-value">${Rating}</span>&nbsp;
-                    <span class="resmenu-rating-count">(${TotalReviews})</span>
-                </span>
-              </div>
-              <div class='resmenu-fooddesc'>
-                ${FoodDescription}
-              </div>
-              <div class="resmenu-info-separator">${chiptags(ingredients)}</div>
-            </div>
-        </td>
-        <td class='resmenu-cell'>
-          <div class="resmenu-price-section">
-            ${if(originalPrice> newPrice)}
-            <span class="resmenu-price">$${newPrice} &nbsp;&nbsp;</span>
-            <span class='price-direction'>  <-- </span>
-            <span class="resmenu-old-price">$${originalPrice}</span>
-            ${else}
-            <span class="resmenu-price">$${newPrice}</span>
-            ${/if}
-          </div>
-        </td>
-        <td class='resmenu-cell'>
-            <div class="menu-right">
-                <div class="resmenu-image-wrap">
-                    <img class="resmenu-image" src="${Image}" alt="${FoodName}"/>
-                <div class="resmenu-count">
-                    <input id="food-numeric" class="resmenu-food-count" type="text"  />
-                </div>
-                </div>
-            </div>
-        </td>
-        ${/if}
-    </tr>
-</script>
-<div class="control-section">
-    <div class="content-wrapper">
-        <div class="treegrid-center-container">
-            <div class="resmenu-toolbar-search">
-                <input id="search-autocomplete" type="text" placeholder="Search for DISHES" />
-                <span class="e-input-group-icon e-search-icon"></span>
-            </div>
-            <div id="cartDialog"></div>
-            <div id="TreeGrid">
-            </div>
-        </div>
-
-    </div>
-</div>
 <!-- custom code start -->
 <div id="action-description">
     <p>This demo shows how the Tree Grid can be used to create a visually rich and interactive food menu. The demo meets

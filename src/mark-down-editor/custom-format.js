@@ -5,6 +5,7 @@ var textArea;
 var mdPreview;
 var mdsource;
 var tooltipObj;
+var markdownConverter = ej.markdownconverter.MarkdownConverter;
 this.default = function () {
     var defaultRTE = new ej.richtexteditor.RichTextEditor({
         height: '260px',
@@ -45,18 +46,11 @@ this.default = function () {
         }
     });
     defaultRTE.appendTo('#defaultRTE'); 
-    loadExternalFile();
-    // Dynamically load the marked.js file
-    function loadExternalFile() {
-      var script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.19/marked.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
-    }
     function markdownConversion() {
         if (mdPreview && mdPreview.classList.contains('e-active')) {
             var id = defaultRTE.getID() + 'html-view';
             var htmlPreview = defaultRTE.element.querySelector('#' + id);
-            htmlPreview.innerHTML = marked(defaultRTE.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverter.toHtml(defaultRTE.contentModule.getEditPanel().value);
         }
     }
     function fullPreview() {
@@ -79,7 +73,7 @@ this.default = function () {
             }
             textArea.style.display = 'none';
             htmlPreview.style.display = 'block';
-            htmlPreview.innerHTML = marked(defaultRTE.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverter.toHtml(defaultRTE.contentModule.getEditPanel().value);
             tooltipObj.content = "Codeview";
         }
     }

@@ -27,6 +27,8 @@ var expTotal;
 var groupValue;
 var pieRenderData = [];
 
+var isCreated = false;
+var dateRangePickerObject;
 
 // Define predicates for filtering data based on date range
 var predicateStart = new ej.data.Predicate('DateTime', 'greaterthanorequal', window.startDate);
@@ -64,45 +66,69 @@ this.default = function () {
         width: '100%', height: '900px', nodes: nodes,
         backgroundColor: '#F5F5F5',
         nodeTemplate: '#nodetemplate',
-        created: function () { diagram.fitToPage(); }
+        created: function () {
+            diagram.fitToPage();
+            getTotalExpense();
+            initialRender();
+            renderPieComponent();
+            renderGridComponent();
+            renderDateRangeComponent();
+            isCreated = true;
+        },
+        load: function () {
+            if (isCreated) {
+                setTimeout(function () {
+                    diagram.fitToPage();
+                    getTotalExpense();
+                    initialRender();
+                    pie.appendTo('#pieChart');
+                    renderGridComponent();
+                    dateRangePickerObject.appendTo('#daterange');
+                }, 0);
+            }
+        }
     });
     diagram.appendTo('#diagram');
-    getTotalExpense();
-    initialRender();
-    // Initialize pie chart and grid
-    pie = new ej.charts.AccumulationChart({
-        enableSmartLabels: true, width: '100%', height: '350px', series: getSeries(),
-        legendSettings: { visible: true }, textRender: function (args) {
-            args.series.dataLabel.font.size = '13px';
-            pie.animateSeries = true; if (args.text.indexOf('Others') > -1) { args.text = 'Others'; }
-        },
-    });
-    pie.appendTo('#pieChart');
-    createLegendData('pie');
-    grid = new ej.grids.Grid({
-        width: '40%', dataSource: pieRenderData, rowTemplate: '#rowtemplate',
-        columns: [{ width: '10%', textAlign: 'Center' },
-        { width: '50%' },
-        { width: '20%' },
-        { width: '20%' }],
-    });
-    grid.appendTo('#grid');
+    function renderPieComponent() {
+        // Initialize pie chart and grid
+        pie = new ej.charts.AccumulationChart({
+            enableSmartLabels: true, width: '100%', height: '350px', series: getSeries(),
+            legendSettings: { visible: true }, textRender: function (args) {
+                args.series.dataLabel.font.size = '13px';
+                pie.animateSeries = true; if (args.text.indexOf('Others') > -1) { args.text = 'Others'; }
+            },
+        });
+        pie.appendTo('#pieChart');
+        createLegendData('pie');
+    }
+    function renderGridComponent() {
+        grid = new ej.grids.Grid({
+            width: '40%', dataSource: pieRenderData, rowTemplate: '#rowtemplate',
+            columns: [{ width: '10%', textAlign: 'Center' },
+            { width: '50%' },
+            { width: '20%' },
+            { width: '20%' }],
+        });
+        grid.appendTo('#grid');
+    }
 
     // Initialize date range picker
-    var dateRangePickerObject = new ej.calendars.DateRangePicker({
-        format: 'MM/dd/yyyy', change: onDateRangeChange, startDate: window.startDate,
-        min: new Date(2017, 5, 1), max: new Date(2017, 10, 30),
-        endDate: window.endDate, showClearButton: false, allowEdit: false,
-        presets: [
-            { label: 'Last Month', start: new Date('10/1/2017'), end: new Date('10/31/2017') },
-            { label: 'Last 3 Months', start: new Date('9/1/2017'), end: new Date('11/30/2017') },
-            { label: 'All Time', start: new Date('6/1/2017'), end: new Date('11/30/2017') }
-        ]
-    });
-    dateRangePickerObject.appendTo('#daterange');
-    window.startDate = dateRangePickerObject.startDate;
-    window.endDate = dateRangePickerObject.endDate;
-    
+    function renderDateRangeComponent() {
+        dateRangePickerObject = new ej.calendars.DateRangePicker({
+            format: 'MM/dd/yyyy', change: onDateRangeChange, startDate: window.startDate,
+            min: new Date(2017, 5, 1), max: new Date(2017, 10, 30),
+            endDate: window.endDate, showClearButton: false, allowEdit: false,
+            presets: [
+                { label: 'Last Month', start: new Date('10/1/2017'), end: new Date('10/31/2017') },
+                { label: 'Last 3 Months', start: new Date('9/1/2017'), end: new Date('11/30/2017') },
+                { label: 'All Time', start: new Date('6/1/2017'), end: new Date('11/30/2017') }
+            ]
+        });
+        dateRangePickerObject.appendTo('#daterange');
+        window.startDate = dateRangePickerObject.startDate;
+        window.endDate = dateRangePickerObject.endDate;
+    }
+
 };
 //Function to get series data for the pie chart
 function getSeries() {
@@ -329,6 +355,7 @@ function createLegendData(initiate) {
     }
     pie.legendSettings.visible = false;
     pie.dataBind();
+    pieRenderData = [];
     for (var i = 0; i < pieLegendData.length; i++) {
         var data = pieLegendData[i];
         if (data.text.indexOf('Others') > -1) {

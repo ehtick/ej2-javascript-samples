@@ -1,4 +1,3 @@
-
     this.default = function () {
         var sendButton = new ej.buttons.Button({});
         var iconTemp = '<button id="sendButton" class="e-control e-btn e-primary" data-ripple="true">' + 'Send</button>';
@@ -35,7 +34,7 @@
             var enteredVal = document.getElementById('inVal');
             var dialogTextElement = document.getElementsByClassName('dialogText')[0];
             var dialogTextWrap  = document.getElementsByClassName('dialogContent')[0];
-            dialogTextElement.innerHTML = enteredVal.value;
+            dialogTextElement.innerHTML = ej.base.SanitizeHtmlHelper.sanitize(enteredVal.value);
             enteredVal.value = '';
         }
         function dialogClose() {

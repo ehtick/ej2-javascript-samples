@@ -131,7 +131,7 @@ this.default = function () {
             } else {
                 topTierformat.dataSource = hourformat;
             }
-            topTierformat.refresh();
+            topTierformat.value = topTierformat.dataSource[0].id;
             updateUnitWidth(unit, 'top');
             gantt.timelineSettings.topTier.unit = unit;
         }
@@ -167,7 +167,7 @@ this.default = function () {
             } else {
                 bottomTierformat.dataSource = hourformat;
             }
-            bottomTierformat.refresh();
+            bottomTierformat.value = bottomTierformat.dataSource[0].id;
             updateUnitWidth(unit, 'bottom');
             gantt.timelineSettings.bottomTier.unit = unit;
         }

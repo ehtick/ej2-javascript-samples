@@ -3,6 +3,7 @@
  */
 var textArea;
 var mdsource;
+var markdownConverter = ej.markdownconverter.MarkdownConverter;
 this.default = function() {
     var markdownMention = new ej.richtexteditor.RichTextEditor({
         height: '250px',
@@ -45,7 +46,7 @@ this.default = function() {
         if (mdsource.classList.contains('e-active')) {
             var id = markdownMention.getID() + 'html-view';
             var htmlPreview = document.body.querySelector('#markdownMentionhtml-preview');
-            htmlPreview.innerHTML = marked(markdownMention.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverter.toHtml(markdownMention.contentModule.getEditPanel().value);
         }
     }
     function fullPreview() {
@@ -72,7 +73,7 @@ this.default = function() {
             }
             textArea.style.display = 'none';
             htmlPreview.style.display = 'block';
-            htmlPreview.innerHTML = marked(markdownMention.contentModule.getEditPanel().value);
+            htmlPreview.innerHTML = markdownConverter.toHtml(markdownMention.contentModule.getEditPanel().value);
             mdsource.parentElement.title = 'Code View';
         }
     }
@@ -105,11 +106,4 @@ this.default = function() {
         allowSpaces: true
     });
     mention.appendTo('#editorMention');
-    loadExternalFile();
-    // Dynamically load the marked.js file
-    function loadExternalFile() {
-      var script = document.createElement('script');
-      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.19/marked.js';
-      document.getElementsByTagName('head')[0].appendChild(script);
-    }
 };

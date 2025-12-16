@@ -3,6 +3,7 @@
     "directory": "ai-assistview",
     "category": "Interactive Chat",
     "ftName": "ai-assistview",
+    "type": "update",
     "dataSourcePath": "src/ai-assistview/promptResponseData.js",
     "samples": [
         {
@@ -68,13 +69,49 @@
         {
             "url": "dialog",
             "name": "Notes Assistant",
-            "category": "Integration",
+            "category": "Use Cases",
             "api":{ "AIAssitView": ["promptSuggestions", "prompts", "promptRequest", "toolbarSettings", "bannerTemplate", "responseToolbarSettings", "cssClass"] },
             "description": "Showcases the AiAssistView control with other component integration",
             "sourceFiles": [
                 { "displayName": "dialog.js", "path":"src/ai-assistview/dialog.js" },
                 { "displayName": "dialog.html", "path":"src/ai-assistview/dialog.html" },
                 { "displayName": "promptResponseData.js", "path":"src/ai-assistview/promptResponseData.js" }   
+            ]
+        },
+        {
+            "url": "model",
+            "name": "Multiple AI Models",
+            "category": "Use Cases",
+            "type": "new",
+            "api":{ "AIAssitView": ["bannerTemplate", "promptItemTemplate", "responseItemTemplate", "promptSuggestionItemTemplate", "promptSuggestions", "promptSuggestionsHeader", "promptRequest"] },
+            "description": "Showcases the AiAssistView control to integrate with Gemini, OpenAI Sample.",
+            "sourceFiles": [
+                { "displayName": "ai-integrations.js", "path":"src/ai-assistview/model.js" },
+                { "displayName": "ai-integrations.html", "path":"src/ai-assistview/model.html" } 
+            ]
+        },
+        {
+            "url": "speech-to-text",
+            "name": "Speech To Text",
+            "category": "Speech",
+            "type": "new",
+            "api":{ "AIAssitView": ["promptRequest", "toolbarSettings", "bannerTemplate", "footerTemplate", "promptToolbarSettings", "stopRespondingClick"] },
+            "description": "Demonstrates the AI AssistView component integrated with Speech-to-Text functionality, enabling users to interact using voice input transcribed into text.",
+            "sourceFiles": [
+                { "displayName": "ai-speech-to-text.js", "path":"src/ai-assistview/speech-to-text.js" },
+                { "displayName": "ai-speech-to-text.html", "path":"src/ai-assistview/speech-to-text.html" } 
+            ]
+        },
+        {
+            "url": "text-to-speech",
+            "name": "Text To Speech",
+            "category": "Speech",
+            "type": "new",
+            "api":{ "AIAssitView":["promptRequest", "toolbarSettings", "bannerTemplate", "responseToolbarSettings", "stopRespondingClick"] },
+            "description": "Demonstrates the AiAssistView component integrated with Text-to-Speech functionality, allowing AI-generated responses to be vocalized for voice-based interaction.",
+            "sourceFiles": [
+                { "displayName": "ai-text-to-speech.js", "path":"src/ai-assistview/text-to-speech.js" },
+                { "displayName": "ai-text-to-speech.html", "path":"src/ai-assistview/text-to-speech.html" } 
             ]
         }
     ]

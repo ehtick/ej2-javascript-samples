@@ -1,5 +1,64 @@
-<!-- custom code start -->
+<script type="text/x-template" id="resource">
+    <tr >
+        <td style="width: 30%">
+            <div>
+                <img class="resources" src="src/tree-grid/images/__Resources.png" alt="Resources"/> Resources
+            </div>
+        </td>
+    </tr>
+
+</script>
+<script type="text/x-template" id="projectName">
+    <tr >
+        <td style="width: 30%">
+            <div>
+                <img class="taskName" src="src/tree-grid/images/__Taskname.png"  width="26px" alt="TaskName"/> Task Name
+            </div>
+        </td>
+    </tr>
+</script>
+<script type="text/x-template" id="dateTemplate">
+    <tr >
+        <td style="width: 30%">
+            <div>
+                <img class="startDate" src="src/tree-grid/images/__Startname.png" alt="StartDate"/> Start Date
+            </div>
+        </td>
+    </tr>
+
+</script>
+<script type="text/x-template" id="durationTemplate">
+    <tr >
+        <td style="width: 30%">
+            <div>
+                <img class="duration" src="src/tree-grid/images/__Duration.png" width="25" alt="Duration"/> Duration
+            </div>
+        </td>
+    </tr>
+
+</script>
+<script type="text/x-template" id="progressTemplate">
+     <tr >
+        <td style="width: 30%">
+            <div>
+                <img class="progress" src="src/tree-grid/images/__progress.png" alt="Progress"/> Progress
+            </div>
+        </td>
+    </tr>
+
+</script>
+<div class="control-section">
+    <div class="content-wrapper">
+        <div id="TreeGrid" role="grid" aria-label="Tree Grid">
+        </div>
+    </div>
+</div>
+
 <style>
+    .e-image {
+        margin-right: 8px;
+    }
+
     .material-dark img.taskName {
         content: url("src/tree-grid/images/Task Name.png");
         padding-left: 6px;
@@ -664,9 +723,6 @@
         }
     }
 
-</style>
-<!-- custom code end -->
-<style>
     .bootstrap5 img.taskName,
     .bootstrap5\.3 img.taskName {
         content: url("src/tree-grid/images/__Task name.png");
@@ -710,63 +766,8 @@
     img.progress{
         margin-bottom:0px !important;
     }
+
 </style>
-
-<script type="text/x-template" id="resource">
-    <tr >
-        <td style="width: 30%">
-            <div>
-                <img class="resources" src="src/tree-grid/images/__Resources.png" alt="Resources"/> Resources
-            </div>
-        </td>
-    </tr>
-
-</script>
-<script type="text/x-template" id="projectName">
-    <tr >
-        <td style="width: 30%">
-            <div>
-                <img class="taskName" src="src/tree-grid/images/__Task name.png"  width="26px" alt="TaskName"/> Task Name
-            </div>
-        </td>
-    </tr>
-</script>
-<script type="text/x-template" id="dateTemplate">
-    <tr >
-        <td style="width: 30%">
-            <div>
-                <img class="startDate" src="src/tree-grid/images/__Start name.png" alt="StartDate"/> Start Date
-            </div>
-        </td>
-    </tr>
-
-</script>
-<script type="text/x-template" id="durationTemplate">
-    <tr >
-        <td style="width: 30%">
-            <div>
-                <img class="duration" src="src/tree-grid/images/__Duration.png" width="25" alt="Duration"/> Duration
-            </div>
-        </td>
-    </tr>
-
-</script>
-<script type="text/x-template" id="progressTemplate">
-     <tr >
-        <td style="width: 30%">
-            <div>
-                <img class="progress" src="src/tree-grid/images/__progress.png" alt="Progress"/> Progress
-            </div>
-        </td>
-    </tr>
-
-</script>
-<div class="control-section">
-    <div class="content-wrapper">
-        <div id="TreeGrid" role="grid" aria-label="Tree Grid">
-        </div>
-    </div>
-</div>
 <!-- custom code start -->
 <div id="action-description">
     <p>This sample demonstrates the Tree Grid header template feature. In this sample, we have shown custom icons in the column headers.</p>
@@ -786,9 +787,4 @@
 				documentation</a> section
 		</p>
 </div>
-<style>
-    .e-image {
-        margin-right: 8px;
-    }
-</style>
 <!-- custom code end -->

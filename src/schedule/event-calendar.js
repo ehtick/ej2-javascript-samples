@@ -354,7 +354,6 @@ this.default = function () {
         animationSettings: { effect: 'Zoom' },
         visible: false,
         width: '320px',
-        height: '250px',
         isModal: true,
         buttons: [{ buttonModel: { content: 'Add', isPrimary: true } }]
     });

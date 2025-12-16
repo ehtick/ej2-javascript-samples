@@ -1,33 +1,30 @@
 this.default = function () {
-    const serverAIRequest = async (settings) => {
-        let output = '';
-        try {
-            const response = await requestAIModel(settings);
-            output = response;
-        } catch (error) {
-            console.error("Error:", error);
-        }
-        return output;
-    };
     // Initialize the Smart TextArea control
-    let textareaObj = new ej.inputs.SmartTextArea({
+    var textareaObj = new ej.inputs.SmartTextArea({
         placeholder: 'Enter your queries here',
         floatLabelType: 'Auto',
-        multiline: true,
-        rows: 3,
-        cols: 35,
-        aiSuggestionhandler: serverAIRequest
+        rows: 5,
+        cols: 100,
+        userRole: 'Employee communicating with internal team',
+        UserPhrases: [
+            "Please find the attached report.",
+            "Let's schedule a meeting to discuss this further.",
+            "Can you provide an update on this task?",
+            "I appreciate your prompt response.",
+            "Let's collaborate on this project to ensure timely delivery."
+        ],
+        aiSuggestionHandler: window.serverAIRequest
     });
     textareaObj.appendTo('#smart-textarea');
 
-    const rolesData = [
+    var rolesData = [
         "Maintainer of an open-source project replying to GitHub issues",
         "Employee communicating with internal team",
         "Customer support representative responding to customer queries",
         "Sales representative responding to client inquiries"
     ];
 
-    let presets = [
+    var presets = [
         {
             userRole: "Maintainer of an open-source project replying to GitHub issues",
             userPhrases: [
@@ -70,15 +67,17 @@ this.default = function () {
         }
     ];
 
-    let dropDownPresets = new ej.dropdowns.DropDownList({
+    var dropDownPresets = new ej.dropdowns.DropDownList({
         dataSource: rolesData,
+        width:'100%',
         placeholder: "Select a role",
         value: "Maintainer of an open-source project replying to GitHub issues",
         popupHeight: "200px",
         change: (e) => {
-            let selectedRole = e.value;
-            let selectedPreset = presets.find((preset) => preset.userRole === selectedRole);
-            textareaObj.value = selectedPreset.userPhrases.join('\n');
+            var selectedRole = e.value;
+            var selectedPreset = presets.find((preset) => preset.userRole === selectedRole);
+            textareaObj.userRole = selectedRole;
+            textareaObj.UserPhrases = selectedPreset.userPhrases;
         }
     });
     dropDownPresets.appendTo('#user-role');

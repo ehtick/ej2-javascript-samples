@@ -99,7 +99,8 @@ this.default = function () {
         title: 'Annual Growth GDP in France',
         //Initializing Tooltip
         tooltip: {
-            enable: true
+            enable: true,
+            enableHighlight: true
         }, legendSettings: { enableHighlight: true },
          // custom code start
         load: function (args) {
